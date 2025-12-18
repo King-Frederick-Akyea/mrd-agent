@@ -1,0 +1,44 @@
+%% Architecture Diagram for Autonomous MRD Agent
+flowchart TD
+    Start([User Prompt]) --> Parse[Parse & Create Research Plan]
+    Parse --> Module{Vertical Module}
+    Module -->|Gambling| GamblingMod[Gambling Module]
+    Module -->|SaaS| SaaSMod[SaaS Module]
+    
+    GamblingMod --> ValidatePlan{Human Validation?}
+    SaaSMod --> ValidatePlan
+    
+    ValidatePlan -->|Approved| Research[Execute Research Tasks]
+    ValidatePlan -->|Rejected| Error([Error: Plan Rejected])
+    
+    Research --> StateMachine[State Machine: RESEARCHING]
+    StateMachine --> Tools[External Tools]
+    Tools -->|Sensor Tower| SensorTower[Market Data]
+    Tools -->|Sentiment| Sentiment[Sentiment Analysis]
+    Tools -->|Regulatory| Regulatory[Compliance Check]
+    
+    SensorTower --> Results[Research Results]
+    Sentiment --> Results
+    Regulatory --> Results
+    
+    Results --> CheckData{Sufficient Data?}
+    CheckData -->|No| Retry[Retry with Backoff]
+    Retry --> Research
+    CheckData -->|Yes| Synthesize[Synthesize MRD]
+    
+    Synthesize --> StateMachine2[State Machine: VALIDATING]
+    StateMachine2 --> Pydantic[Pydantic Validation]
+    Pydantic --> BusinessRules[Business Rules Check]
+    
+    BusinessRules -->|Valid| Complete[State Machine: COMPLETED]
+    BusinessRules -->|Invalid| Failed[State Machine: FAILED]
+    
+    Complete --> MRDOutput([MRD Output])
+    Failed --> ErrorOutput([Error MRD])
+    
+    style Start fill:#e1f5ff
+    style MRDOutput fill:#d4edda
+    style ErrorOutput fill:#f8d7da
+    style StateMachine fill:#fff3cd
+    style StateMachine2 fill:#fff3cd
+    style Pydantic fill:#d1ecf1

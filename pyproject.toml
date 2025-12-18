@@ -1,0 +1,12 @@
+[project]
+name = "autonomous-mrd-agent"
+version = "0.1.0"
+description = "Autonomous MRD generation agent"
+requires-python = ">=3.10"
+
+dependencies = [
+    "pydantic>=2.0",
+]
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"
