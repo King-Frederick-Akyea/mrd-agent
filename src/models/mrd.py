@@ -123,37 +123,8 @@ class MRDOutput(BaseModel):
     """
     Complete Market Requirements Document structure.
     
-    This is the final output of the agent. Every field is validated by Pydantic,
-    ensuring the MRD can be safely stored in a database or used by downstream systems.
-    
-    Key Design Decisions:
-    1. Structured (Not Text): Every field is typed and structured, not free-form text.
-       This allows querying ("What competitors were analyzed?") and validation.
-    
-    2. Source Tracking: The `all_claims` field contains every claim made in the MRD,
-       each with its data sources. This enables:
-       - Audit trails (who said what, when, from where)
-       - Hallucination detection (claims without sources are invalid)
-       - Confidence scoring (aggregated from source confidence scores)
-    
-    3. Confidence Score: Automatically calculated from source confidence scores.
-       Low confidence (< 0.6) should trigger human review.
-    
-    4. Database-Ready: Can be serialized directly to JSON and stored:
-       ```python
-       mrd_json = mrd.model_dump_json()
-       db.save("mrds", mrd_json)
-       ```
-    
-    Example:
-        mrd = MRDOutput(
-            original_prompt="Build gambling app for Europe",
-            vertical="real_money_gaming",
-            executive_summary="...",
-            competitor_analysis=[...],
-            # ... all required fields
-        )
-        # Pydantic validates structure automatically
+    Final output of the agent. All fields are validated by Pydantic.
+    Can be serialized directly to JSON for database storage.
     """
     id: str = Field(default_factory=lambda: f"MRD_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
     generated_at: datetime = Field(default_factory=datetime.now)
