@@ -278,16 +278,4 @@ python src/examples/triumph_demo.py
 
 ---
 
-## 📝 License
-
-[Your License Here]
-
----
-
-## 🤝 Contributing
-
-[Your Contributing Guidelines Here]
-
----
-
 **Built for production. Designed for reliability. Structured for success.**
